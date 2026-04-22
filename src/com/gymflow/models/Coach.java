@@ -3,7 +3,8 @@ class Coach extends Utilisateur {
         super(id, nom, email);
     }
 
-    public void creerProgramme() {
-        System.out.println("[Coach] " + nom + " crée un nouveau programme d'entraînement.");
+    public Programme creerProgramme(String titre, String desc, String obj) {
+        System.out.println("[Coach] " + nom + " crée le programme : " + titre);
+        return new Programme(titre, desc, obj);
     }
 }
