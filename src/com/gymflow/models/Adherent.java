@@ -6,4 +6,8 @@ class Adherent extends Utilisateur {
     public void reserverSeance() {
         System.out.println("[Adhérent] " + nom + " a initié une réservation.");
     }
+        public void afficherDetails() {
+        System.out.println(" nom: " + nom );
+            System.out.println(" email: " + email  );
+    }
 }
