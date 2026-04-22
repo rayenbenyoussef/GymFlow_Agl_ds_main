@@ -1,18 +1,28 @@
-class Exercice {
-    private int id;
-    private int idProgramme;
+public class Exercice {
     private String nom;
-    private int duree; // en secondes ou minutes
+    private int series;
     private int repetitions;
+    private int repos; // en secondes
+    private boolean estTermine;
 
-    public Exercice(int id, String nom, int duree, int repetitions) {
-        this.id = id;
+    public Exercice(String nom, int series, int repetitions, int repos) {
         this.nom = nom;
-        this.duree = duree;
+        this.series = series;
         this.repetitions = repetitions;
+        this.repos = repos;
+        this.estTermine = false;
     }
 
-    public void afficherExercice() {
-        System.out.println("   - Exercice: " + nom + " | " + repetitions + " reps | Durée: " + duree + "s");
+    public void marquerCommeTermine() {
+        this.estTermine = true;
+    }
+
+    public boolean isEstTermine() { return estTermine; }
+    public String getNom() { return nom; }
+
+    @Override
+    public String toString() {
+        String statut = estTermine ? "[✅ Terminé]" : "[⏳ En cours]";
+        return statut + " " + nom + " : " + series + "x" + repetitions + " (Repos: " + repos + "s)";
     }
 }
