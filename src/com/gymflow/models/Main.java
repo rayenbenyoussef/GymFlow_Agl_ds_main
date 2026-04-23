@@ -1,38 +1,78 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        ArrayList<Abonnement> abonnements = new ArrayList<>();
 
-        System.out.println("=== Création d'un abonnement ===");
+        int choix;
 
-        System.out.print("Nom du membre: ");
-        String nom = scanner.nextLine();
+        do {
+            System.out.println("\n=== MENU GYMFLOW ===");
+            System.out.println("1. Ajouter un abonnement");
+            System.out.println("2. Afficher tous les abonnements");
+            System.out.println("3. Quitter");
+            System.out.print("Votre choix: ");
 
-        System.out.print("Type d'abonnement (Basic/Premium...): ");
-        String type = scanner.nextLine();
+            choix = scanner.nextInt();
+            scanner.nextLine(); // vider buffer
 
-        System.out.print("Prix: ");
-        double prix = scanner.nextDouble();
-        scanner.nextLine(); // vider le buffer
+            switch (choix) {
 
-        System.out.print("Date début (jj/mm/aaaa): ");
-        String dateDebut = scanner.nextLine();
+                case 1:
+                    // 🔹 Saisie utilisateur
+                    System.out.print("Nom du membre: ");
+                    String nom = scanner.nextLine();
 
-        System.out.print("Date fin (jj/mm/aaaa): ");
-        String dateFin = scanner.nextLine();
+                    System.out.print("Type d'abonnement: ");
+                    String type = scanner.nextLine();
 
-        System.out.print("Statut (Actif/Expiré/En attente): ");
-        String statut = scanner.nextLine();
+                    System.out.print("Prix: ");
+                    double prix = scanner.nextDouble();
+                    scanner.nextLine();
 
-        // Création de l'objet
-        Abonnement abonnement = new Abonnement(
-                nom, type, prix, dateDebut, dateFin, statut
-        );
+                    System.out.print("Date début: ");
+                    String dateDebut = scanner.nextLine();
 
-        // Affichage
-        abonnement.afficherDetails();
+                    System.out.print("Date fin: ");
+                    String dateFin = scanner.nextLine();
+
+                    System.out.print("Statut: ");
+                    String statut = scanner.nextLine();
+
+                    // 🔹 Création + ajout dans la liste
+                    Abonnement a = new Abonnement(
+                            nom, type, prix, dateDebut, dateFin, statut
+                    );
+
+                    abonnements.add(a);
+
+                    System.out.println("✅ Abonnement ajouté !");
+                    break;
+
+                case 2:
+                    // 🔹 Affichage liste
+                    if (abonnements.isEmpty()) {
+                        System.out.println("❌ Aucun abonnement.");
+                    } else {
+                        System.out.println("\n📋 Liste des abonnements:");
+                        for (Abonnement ab : abonnements) {
+                            ab.afficherDetails();
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("👋 Au revoir !");
+                    break;
+
+                default:
+                    System.out.println("❌ Choix invalide.");
+            }
+
+        } while (choix != 3);
 
         scanner.close();
     }
