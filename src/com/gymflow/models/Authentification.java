@@ -1,112 +1,68 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
-public class Authentification {
-    private static ArrayList<Adherent> adherents = new ArrayList<>();
-    private static int prochainId = 1;
+class Authentification {
+    private static final int MAX_ATTEMPTS = 3;
+    private static final long BLOCK_TIME_MS = 5 * 60 * 1000; // 5 minutes
+    private static final Map<String, Long> blocages = new HashMap<>();
+    private static final Scanner scanner = new Scanner(System.in);
 
-    public static Adherent inscrire(String nom, String email, String motDePasse) {
-        // Vérifier que le nom n'est pas vide
-        if (nom == null || nom.trim().isEmpty()) {
-            System.out.println("Erreur : Le nom ne peut pas être vide.");
-            return null;
-        }
+    public static Utilisateur login(ArrayList<Utilisateur> utilisateurs) {
+        int tentatives = 0;
+        String email;
 
-        // Vérifier que l'email n'est pas vide et contient "@"
-        if (email == null || email.trim().isEmpty()) {
-            System.out.println("Erreur : L'email ne peut pas être vide.");
-            return null;
-        }
-        if (!email.contains("@")) {
-            System.out.println("Erreur : L'email doit contenir le caractère '@'.");
-            return null;
-        }
+        while (tentatives < MAX_ATTEMPTS) {
+            System.out.print("Email : ");
+            email = scanner.nextLine().trim();
 
-        // Vérifier que le mot de passe contient au moins 6 caractères
-        if (motDePasse == null || motDePasse.length() < 6) {
-            System.out.println("Erreur : Le mot de passe doit contenir au moins 6 caractères.");
-            return null;
-        }
+            if (estBloque(email)) {
+                long reste = blocages.get(email) - System.currentTimeMillis();
+                System.out.println("Compte bloqué. Réessayez dans " + (reste / 1000) + " secondes.");
+                continue;
+            }
 
-        // Vérifier si l'email est déjà utilisé
-        for (Adherent a : adherents) {
-            if (a.getEmail().equals(email)) {
-                System.out.println("Erreur : Un compte avec cet email existe déjà.");
-                return null;
+            System.out.print("Mot de passe : ");
+            String motDePasse = scanner.nextLine().trim();
+
+            Utilisateur utilisateur = trouverUtilisateur(utilisateurs, email);
+            if (utilisateur != null && utilisateur.passwordMatches(motDePasse)) {
+                utilisateur.seConnecter();
+                blocages.remove(email);
+                return utilisateur;
+            }
+
+            tentatives++;
+            System.out.println("Email ou mot de passe incorrect. Tentative " + tentatives + " sur " + MAX_ATTEMPTS + ".");
+
+            if (tentatives >= MAX_ATTEMPTS) {
+                blocages.put(email, System.currentTimeMillis() + BLOCK_TIME_MS);
+                System.out.println("Trop d'échecs. Compte bloqué pendant 5 minutes.");
             }
         }
 
-        // Créer l'adhérent et l'ajouter à la liste
-        Adherent nouvelAdherent = new Adherent(prochainId++, nom, email, motDePasse);
-        adherents.add(nouvelAdherent);
-        System.out.println("Inscription réussie pour " + nom + ".");
-        return nouvelAdherent;
-    }
-
-    public static Adherent seConnecter(String email, String motDePasse) {
-        for (Adherent a : adherents) {
-            if (a.getEmail().equals(email) && a.getMotDePasse().equals(motDePasse)) {
-                System.out.println("Connexion réussie pour " + a.getNom() + ".");
-                return a;
-            }
-        }
-        System.out.println("Email ou mot de passe incorrect.");
         return null;
     }
 
-    // Méthode pour obtenir la liste des adhérents (pour tests)
-    public static ArrayList<Adherent> getAdherents() {
-        return adherents;
-    }
-}
-    private static ArrayList<Membre> membres = new ArrayList<>();
-
-    public static Membre inscrire(String nom, String email, String motDePasse) {
-        // Vérifier que l'email n'est pas vide et contient "@"
-        if (email == null || email.trim().isEmpty()) {
-            System.out.println("Erreur : L'email ne peut pas être vide.");
-            return null;
+    private static boolean estBloque(String email) {
+        Long finBlocage = blocages.get(email);
+        if (finBlocage == null) {
+            return false;
         }
-        if (!email.contains("@")) {
-            System.out.println("Erreur : L'email doit contenir le caractère '@'.");
-            return null;
+        if (System.currentTimeMillis() > finBlocage) {
+            blocages.remove(email);
+            return false;
         }
-
-        // Vérifier que le mot de passe a au moins 6 caractères
-        if (motDePasse == null || motDePasse.length() < 6) {
-            System.out.println("Erreur : Le mot de passe doit contenir au moins 6 caractères.");
-            return null;
-        }
-
-        // Vérifier si l'email est déjà utilisé
-        for (Membre m : membres) {
-            if (m.getEmail().equals(email)) {
-                System.out.println("Erreur : Un compte avec cet email existe déjà.");
-                return null;
-            }
-        }
-
-        // Créer le membre et l'ajouter à la liste
-        Membre nouveauMembre = new Membre(nom, email, motDePasse);
-        membres.add(nouveauMembre);
-        System.out.println("Inscription réussie pour " + nom + ".");
-        return nouveauMembre;
+        return true;
     }
 
-    public static Membre connecter(String email, String motDePasse) {
-        for (Membre m : membres) {
-            if (m.getEmail().equals(email) && m.getMotDePasse().equals(motDePasse)) {
-                System.out.println("Connexion réussie pour " + m.getNom() + ".");
-                return m;
+    private static Utilisateur trouverUtilisateur(ArrayList<Utilisateur> utilisateurs, String email) {
+        for (Utilisateur utilisateur : utilisateurs) {
+            if (utilisateur.getEmail().equalsIgnoreCase(email)) {
+                return utilisateur;
             }
         }
-        System.out.println("Erreur : Email ou mot de passe incorrect.");
         return null;
     }
-
-    // Méthode pour obtenir la liste des membres (pour tests ou administration)
-    public static ArrayList<Membre> getMembres() {
-        return membres;
-    }
 }
-
- 
