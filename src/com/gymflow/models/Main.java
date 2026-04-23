@@ -1,50 +1,76 @@
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== GymFlow - Test d'Inscription ===\n");
+        System.out.println("========================================");
+        System.out.println("   BIENVENUE DANS GYMFLOW - SYSTÈME COMPLET");
+        System.out.println("========================================\n");
 
-        // Test 1: Inscription valide
-        System.out.println("--- Test 1: Inscription valide ---");
-        Adherent adherent1 = Inscription.inscrireAdherent("Alice Dupont", "alice@example.com", "password123");
-        if (adherent1 != null) {
-            Inscription.afficherInscription(adherent1);
-        }
+        // ===== INITIALISATION =====
+        GestionnaireReservation gestionnaire = new GestionnaireReservation();
+        
+        // Créer des séances de test
+        System.out.println("--- Création des séances ---");
+        gestionnaire.ajouterSeance(1, "Yoga", LocalDateTime.of(2026, 4, 25, 10, 0), 15, 20.0);
+        gestionnaire.ajouterSeance(2, "Cardio", LocalDateTime.of(2026, 4, 25, 14, 0), 20, 25.0);
+        gestionnaire.ajouterSeance(3, "Musculation", LocalDateTime.of(2026, 4, 26, 16, 0), 10, 30.0);
+        gestionnaire.ajouterSeance(4, "Yoga", LocalDateTime.of(2026, 4, 26, 9, 0), 12, 20.0);
 
-        // Test 2: Inscription avec email invalide
-        System.out.println("\n--- Test 2: Email sans '@' ---");
-        Adherent adherent2 = Inscription.inscrireAdherent("Bob Martin", "bobexample.com", "pass123456");
+        // Afficher toutes les séances
+        gestionnaire.afficherToutesSeances();
 
-        // Test 3: Inscription avec mot de passe trop court
-        System.out.println("\n--- Test 3: Mot de passe trop court ---");
-        Adherent adherent3 = Inscription.inscrireAdherent("Charlie Brown", "charlie@example.com", "123");
+        // ===== TEST D'ABONNEMENT ET FACTURE =====
+        System.out.println("\n--- Création d'un abonnement pour l'adhérent 1 ---");
+        Facture facture1 = new Facture(1);
+        Abonnement abonnement1 = gestionnaire.creerAbonnement(1, "Mensuel", facture1);
+        abonnement1.afficherDetails();
 
-        // Test 4: Inscription avec email déjà utilisé
-        System.out.println("\n--- Test 4: Email déjà utilisé ---");
-        Adherent adherent4 = Inscription.inscrireAdherent("Alice Clone", "alice@example.com", "differentpass");
+        // ===== TEST DE RÉSERVATION =====
+        System.out.println("\n--- Réservation de séances pour l'adhérent 1 ---");
+        gestionnaire.reserverSeance(1, 1, facture1); // Yoga
+        gestionnaire.reserverSeance(1, 2, facture1); // Cardio
 
-        // Test 5: Inscription avec nom vide
-        System.out.println("\n--- Test 5: Nom vide ---");
-        Adherent adherent5 = Inscription.inscrireAdherent("", "empty@example.com", "password123");
+        // Afficher les réservations
+        gestionnaire.afficherReservationsAdherent(1);
 
-        // Affichage du nombre total d'adhérents inscrits
-        System.out.println("\n--- Résumé ---");
-        System.out.println("Nombre total d'adhérents inscrits : " + Inscription.getAdherents().size());
+        // ===== AFFICHAGE ET PAIEMENT DE FACTURE =====
+        System.out.println("\n--- Traitement de la facture ---");
+        facture1.afficher();
 
-        // Test de connexion avec les adhérents inscrits
-        System.out.println("\n=== GymFlow - Test d'Authentification ===\n");
-        ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
-        utilisateurs.addAll(Inscription.getAdherents());
-        utilisateurs.add(new Coach(100, "Coach Test", "coach@example.com", "coach1234"));
-        utilisateurs.add(new Admin(101, "Admin Test", "admin@example.com", "admin1234"));
+        System.out.println("Paiement de la facture par carte...");
+        facture1.payer("Carte bancaire", facture1.getMontantTTC() + 50); // Montant supérieur
 
-        Utilisateur utilisateur = Authentification.login(utilisateurs);
+        // ===== TEST RECHERCHE DE SÉANCES =====
+        System.out.println("\n--- Recherche de séances disponibles ---");
+        ArrayList<Seance> seancesYoga = gestionnaire.rechercherSeancesDisponibles("Yoga");
+        System.out.println("Séances Yoga disponibles : " + seancesYoga.size());
 
-        if (utilisateur != null) {
-            System.out.println("\nUtilisateur connecté avec succès!");
-        } else {
-            System.out.println("\nÉchec de la connexion.");
-        }
+        // ===== TEST AVEC UN DEUXIÈME ADHÉRENT =====
+        System.out.println("\n--- Création d'un abonnement pour l'adhérent 2 ---");
+        Facture facture2 = new Facture(2);
+        Abonnement abonnement2 = gestionnaire.creerAbonnement(2, "Trimestriel", facture2);
+        
+        // Réserver la même séance Yoga
+        gestionnaire.reserverSeance(2, 1, facture2);
+        gestionnaire.reserverSeance(2, 3, facture2);
+
+        gestionnaire.afficherReservationsAdherent(2);
+        facture2.afficher();
+        facture2.payer("Espèces", facture2.getMontantTTC());
+
+        // ===== TEST D'ANNULATION AVEC DÉLAI =====
+        System.out.println("\n--- Test d'annulation de réservation ---");
+        System.out.println("Tentative d'annulation (si délai > 1h)...");
+        // Note: L'annulation sera refusée car la séance est trop proche
+        // gestionnaire.annulerReservation(1, facture1);
+
+        // ===== AFFICHAGE FINAL =====
+        System.out.println("\n========== RÉSUMÉ FINAL ==========");
+        System.out.println("Total des séances : " + gestionnaire.getSeances().size());
+        System.out.println("Total des réservations : " + gestionnaire.getReservations().size());
+        System.out.println("Total des abonnements : " + gestionnaire.getAbonnements().size());
+        System.out.println("==================================\n");
     }
 }

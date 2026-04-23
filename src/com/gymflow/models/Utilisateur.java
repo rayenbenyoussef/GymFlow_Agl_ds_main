@@ -12,6 +12,14 @@ abstract class Utilisateur {
         this.passwordHash = hashPassword(password);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
     public String getEmail() {
         return email;
     }

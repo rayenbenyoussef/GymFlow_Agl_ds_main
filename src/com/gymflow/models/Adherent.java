@@ -3,6 +3,14 @@ class Adherent extends Utilisateur {
         super(id, nom, email, password);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
     public void reserverSeance() {
         System.out.println("[Adhérent] " + nom + " a initié une réservation.");
     }
