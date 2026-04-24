@@ -33,12 +33,6 @@ class Reservation {
             return false;
         }
 
-        // Vérifier que la séance est dans le futur
-        if (!seanceAssociee.estDansFutur()) {
-            System.out.println("Erreur : La séance est passée.");
-            return false;
-        }
-
         // Réserver une place dans la séance
         if (!seanceAssociee.reserverPlace()) {
             return false;
@@ -56,14 +50,6 @@ class Reservation {
         // Vérifier que la réservation est confirmée
         if (!statut.equals("Confirmée")) {
             System.out.println("Erreur : Seule une réservation confirmée peut être annulée.");
-            return false;
-        }
-
-        // Vérifier le délai d'annulation (au moins 1h avant la séance)
-        long heuresAvant = ChronoUnit.HOURS.between(LocalDateTime.now(), seanceAssociee.getDateHeure());
-        if (heuresAvant < DELAI_ANNULATION_HEURES) {
-            System.out.println("Erreur : Annulation possible au moins 1h avant la séance. " +
-                    "Heures restantes : " + heuresAvant);
             return false;
         }
 

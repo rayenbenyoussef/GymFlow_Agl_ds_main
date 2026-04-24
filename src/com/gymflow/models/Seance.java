@@ -51,17 +51,7 @@ class Seance {
         System.out.println("Erreur : Aucune place à libérer.");
         return false;
     }
-
-    // Vérifier si la séance est dans le futur
-    public boolean estDansFutur() {
-        return dateHeure.isAfter(LocalDateTime.now());
-    }
-
-    // Vérifier si on peut réserver (doit être dans le futur)
-    public boolean peutEtreReservee() {
-        return estDansFutur() && aDesPlacesDisponibles();
-    }
-
+    
     // Afficher les détails de la séance
     public void afficherDetails() {
         System.out.println("\n--- Détails de la séance ---");
