@@ -1,14 +1,12 @@
 class Reservation {
-    private int id;
-    private int idAdherent;
-    private int idSeance;
+    private Adherent adherent;
+    private Seance seance;
     private String dateReservation;
     private String statut; // "Confirmée", "Annulée"
 
-    public Reservation(int id, int idAdherent, int idSeance) {
-        this.id = id;
-        this.idAdherent = idAdherent;
-        this.idSeance = idSeance;
+    public Reservation(Adherent adherent, Seance seance) {
+        this.adherent = adherent;
+        this.seance = seance;
         this.dateReservation = "19/04/2026"; // Date actuelle fictive
         this.statut = "En attente";
     }
@@ -20,6 +18,9 @@ class Reservation {
 
     public void annuler() {
         this.statut = "Annulée";
-        System.out.println("[Réservation] La réservation #" + id + " a été annulée.");
+        System.out.println("[Réservation] La réservation a été annulée.");
+    }
+    public Seance getSeance() {
+        return seance;
     }
 }

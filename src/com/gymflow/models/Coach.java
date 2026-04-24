@@ -1,6 +1,6 @@
 class Coach extends Utilisateur {
-    public Coach(int id, String nom, String email) {
-        super(id, nom, email);
+    public Coach(int id, String nom, String email, int numTelephone) {
+        super(id, nom, email,numTelephone, "coach");
     }
 
     public void creerProgramme() {

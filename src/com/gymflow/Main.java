@@ -1,7 +1,3 @@
-import models.AdherentMenu;
-import models.AdminMenu;
-import models.CoachMenu;
-
 import java.util.Scanner;
 
 public class Main {
@@ -13,7 +9,7 @@ public class Main {
 
     public static Utilisateur findUserByEmail(String email) {
         // Simulate user retrieval based on email
-        return null;
+        return new Adherent(1, "Alice", email, 12345678,null,null); // Just a dummy user for testing
     }
 
     public void displayMenu() {
@@ -54,14 +50,16 @@ public class Main {
 
         // TEMPORARY (no auth system yet)
         System.out.println("Connexion simulée réussie pour: " + email);
-        System.out.println("Utilisateur non trouvé. Veuillez vous inscrire.");
         tempUtilisateur = findUserByEmail(email);
         if(tempUtilisateur.getRole().equals("admin")) {
-            new AdminMenu();
+            Admin admin = (Admin) tempUtilisateur;
+            new AdminMenu(admin).displayMenu();
         }else if(tempUtilisateur.getRole().equals("coach")) {
-            new CoachMenu();
+            Coach coach = (Coach) tempUtilisateur;
+            new CoachMenu(coach).displayMenu();
         }else if(tempUtilisateur.getRole().equals("adherent")) {
-            new AdherentMenu();
+            Adherent adherent = (Adherent) tempUtilisateur;
+            new AdherentMenu(adherent).displayMenu();
         }else {
             System.out.println("Rôle non reconnu."); 
         }
