@@ -8,7 +8,6 @@ public class Main {
     }
 
     public static Utilisateur findUserByEmail(String email) {
-        // Simulate user retrieval based on email
         return new Adherent(1, "Alice", email, 12345678,null,null); // Just a dummy user for testing
     }
 
