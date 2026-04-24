@@ -51,7 +51,7 @@ class GestionnaireReservation {
         ArrayList<Seance> seancesDisponibles = new ArrayList<>();
 
         for (Seance seance : seances) {
-            if (seance.getType().equals(type) && seance.peutEtreReservee()) {
+            if (seance.getType().equals(type) ) {
                 seancesDisponibles.add(seance);
             }
         }
