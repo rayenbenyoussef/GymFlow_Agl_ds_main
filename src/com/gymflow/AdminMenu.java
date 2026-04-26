@@ -1,3 +1,4 @@
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,6 +12,8 @@ public class AdminMenu {
     private List<Adherent> adherents = new ArrayList<>();
     private List<Coach> coaches = new ArrayList<>();
     private List<Reservation> reservations = new ArrayList<>();
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
 
     public AdminMenu(Admin admin) {
         this.admin = admin;
@@ -54,7 +57,8 @@ public class AdminMenu {
         System.out.println("\n1. Gérer les adhérents");
         System.out.println("2. Gérer les coachs");
         System.out.println("3. Rechercher par rôle");
-        System.out.println("4. Retour");
+        System.out.println("4. Ajouter une séance");
+        System.out.println("5. Retour");
 
         String choice = scanner.nextLine();
 
@@ -68,8 +72,12 @@ public class AdminMenu {
             case "3":
                 rechercherParRole();
                 break;
+            case "4":
+                break;
         }
     }
+
+    
 
     // ---------- ADHERENTS ----------
     private void gererAdherents() {
@@ -107,7 +115,7 @@ public class AdminMenu {
         System.out.print("Téléphone: ");
         int tel = Integer.parseInt(scanner.nextLine());
 
-        adherents.add(new Adherent(id, nom, email, tel, null, null));
+        adherents.add(new Adherent(id, nom, email, tel,"" ,null, null));
         System.out.println("Adhérent ajouté !");
     }
 
@@ -157,7 +165,7 @@ public class AdminMenu {
                 String email = scanner.nextLine();
 
 
-                coaches.add(new Coach(id, nom, email, numTelephone));
+                coaches.add(new Coach(id, nom, email, numTelephone,"123"));
                 System.out.println("Coach ajouté !");
                 break;
 
@@ -251,9 +259,9 @@ public class AdminMenu {
 
     // 👉 Dummy data (same style as CoachMenu)
     public void addDummyData() {
-        adherents.add(new Adherent(1, "Alice", "alice@mail.com", 12345678, null, null));
-        adherents.add(new Adherent(2, "Bob", "bob@mail.com", 87654321, null, null));
+        adherents.add(new Adherent(1, "Alice", "alice@mail.com", 12345678, "123", null, null));
+        adherents.add(new Adherent(2, "Bob", "bob@mail.com", 87654321, "123", null, null));
 
-        coaches.add(new Coach(1, "Coach A", "sdffsd@vbncv", 12345678));
+        coaches.add(new Coach(1, "Coach A", "sdffsd@vbncv", 12345678, "123"));
     }
 }

@@ -1,14 +1,15 @@
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     private Scanner scanner;
-    public static Utilisateur tempUtilisateur;
+    public static ArrayList<Utilisateur> utilisateurs = new ArrayList<>();
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+
     public Main() {
         this.scanner = new Scanner(System.in);
-    }
-
-    public static Utilisateur findUserByEmail(String email) {
-        return new Adherent(1, "Alice", email, 12345678,null,null); // Just a dummy user for testing
     }
 
     public void displayMenu() {
@@ -25,10 +26,57 @@ public class Main {
 
             switch (choice) {
                 case "1":
-                    handleLogin();
+                    if (utilisateurs.isEmpty()) {
+                        System.out.println("Aucun utilisateur inscrit. Veuillez d'abord vous inscrire.");
+                        continue;
+                    }
+                    Utilisateur utilisateurConnecte = Authentification.login(utilisateurs);
+                    if (utilisateurConnecte != null) {
+                        System.out.println("\nBienvenue " + utilisateurConnecte.getNom() + " !");
+                        if(utilisateurConnecte instanceof Adherent) {
+                            new AdherentMenu((Adherent) utilisateurConnecte).displayMenu();
+                        } else if (utilisateurConnecte instanceof Coach) {
+                            new CoachMenu((Coach) utilisateurConnecte).displayMenu();
+                        } else if (utilisateurConnecte instanceof Admin) {
+                            new AdminMenu((Admin) utilisateurConnecte).displayMenu();
+                        }
+
+                    } else {
+                        System.out.println("\nÉchec de la connexion.");
+                    }
                     break;
                 case "2":
-                    handleRegister();
+                    System.out.println("\nChossez un rôle pour l'inscription:");
+                    System.out.println("1. Adhérent");
+                    System.out.println("2. Coach");
+                    System.out.println("3. Administrateur");
+                    System.out.println("Choix: ");
+                    String roleChoice = scanner.nextLine().trim();
+                    switch (roleChoice) {
+                        case "1":
+                            Adherent nouvelAdherent = Inscription.inscrireAdherentInteractif(scanner);
+                            if (nouvelAdherent != null) {
+                                utilisateurs.add(nouvelAdherent);
+                                Inscription.afficherInscription(nouvelAdherent);
+                            }
+                            break;
+                        case "2":
+                            Coach nouvelCoach = Inscription.inscrireCoachInteractif(scanner);
+                            if (nouvelCoach != null) {
+                                utilisateurs.add(nouvelCoach);
+                                Inscription.afficherInscription(nouvelCoach);
+                            }
+                            break;
+                        case "3":
+                            Admin nouvelAdmin = Inscription.inscrireAdminInteractif(scanner);
+                            if (nouvelAdmin != null) {
+                                utilisateurs.add(nouvelAdmin);
+                                Inscription.afficherInscription(nouvelAdmin);
+                            }
+                            break;
+                        default:
+                            System.out.println("Option de rôle invalide.");
+                    }
                     break;
                 case "3":
                     handleExit();
@@ -38,49 +86,6 @@ public class Main {
                     System.out.println("Option invalide.");
             }
         }
-    }
-
-    private void handleLogin() {
-        System.out.println("\n--- Se connecter ---");
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Mot de passe: ");
-        String password = scanner.nextLine();
-
-        // TEMPORARY (no auth system yet)
-        System.out.println("Connexion simulée réussie pour: " + email);
-        tempUtilisateur = findUserByEmail(email);
-        if(tempUtilisateur.getRole().equals("admin")) {
-            Admin admin = (Admin) tempUtilisateur;
-            new AdminMenu(admin).displayMenu();
-        }else if(tempUtilisateur.getRole().equals("coach")) {
-            Coach coach = (Coach) tempUtilisateur;
-            new CoachMenu(coach).displayMenu();
-        }else if(tempUtilisateur.getRole().equals("adherent")) {
-            Adherent adherent = (Adherent) tempUtilisateur;
-            new AdherentMenu(adherent).displayMenu();
-        }else {
-            System.out.println("Rôle non reconnu."); 
-        }
-        
-        
-    }
-
-    private void handleRegister() {
-        System.out.println("\n--- S'inscrire ---");
-        System.out.print("Nom complet: ");
-        String name = scanner.nextLine();
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-        System.out.print("Num de Telephone: ");
-        String nt = scanner.nextLine();
-        System.out.print("Role: ");
-        String role = scanner.nextLine();
-        System.out.print("mote de passe: ");
-        String mdp = scanner.nextLine();
-
-
-        System.out.println("Utilisateur créé (simulation): " + name);
     }
 
 

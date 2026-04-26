@@ -125,13 +125,4 @@ public class CoachMenu {
         System.out.println("Exercice ajouté !");
     }
 
-    // 👉 Just for testing (add fake adherents)
-    public void addDummyData() {
-        Abonnement a1 = new Abonnement("Mensuel", "Actif");
-        Abonnement a2 = new Abonnement("Annuel", "Actif");
-        Programme p1 = new Programme("Perte de poids", null);
-        Programme p2 = new Programme("Prise de masse", null);
-        adherents.add(new Adherent(1, "Alice","zeze@fdsgsd.vcb", 12345678, a1,p1));
-        adherents.add(new Adherent(2, "Bob","zeze@fdsgsd", 12345678, a2,p1));
-    }
 }

@@ -1,10 +1,13 @@
 class Adherent extends Utilisateur {
+
     private Abonnement abonnement;
     private Programme programme;
-    public Adherent(int id, String nom, String email, int numTelephone, Abonnement abonnement, Programme programme) {
-        super(id, nom, email,numTelephone, "adherent");
+    public Adherent(int id, String nom, String email, int numTelephone, String password, Abonnement abonnement, Programme programme) {
+        super(id, nom, email,numTelephone,password ,"adherent");
         this.abonnement = abonnement;
         this.programme = programme;
+
+
     }
 
     public void reserverSeance() {
