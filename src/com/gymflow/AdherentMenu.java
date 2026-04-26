@@ -10,6 +10,7 @@ public class AdherentMenu {
 
     private List<Reservation> reservations = new ArrayList<>();
     public static GestionnaireReservation gestionnaire = new GestionnaireReservation();
+    private GestionnaireProgramme gestionnaireProgramme = new GestionnaireProgramme();
     public AdherentMenu(Adherent adherent) {
         this.adherent = adherent;
     }
@@ -51,6 +52,7 @@ public class AdherentMenu {
                     break;
                     
                 case "6":
+                    voirProgramme();
                     
                     break;
                 case "7":       
@@ -103,5 +105,52 @@ public class AdherentMenu {
     }
 
 
+
+
+    // ================= PROGRAMME =================
+
+    private void voirProgramme() {
+
+    // 🔍 récupérer le programme via gestionnaire
+    Programme p = gestionnaireProgramme.trouverProgramme(adherent.getId());
+
+    if (p == null) {
+        System.out.println("Aucun programme.");
+        return;
+    }
+
+    System.out.println("\n=== MON PROGRAMME ===");
+    System.out.println("Objectif: " + p.getObjectif());
+
+    List<Exercice> exs = p.getExercices();
+
+    if (exs.isEmpty()) {
+        System.out.println("Aucun exercice.");
+        return;
+    }
+
+    for (int i = 0; i < exs.size(); i++) {
+        Exercice e = exs.get(i);
+
+        String status = e.isTermines() ? "✔" : "❌";
+
+        System.out.println(i + " - " + e.getNom() + " | "
+                + e.getSeries() + "x" + e.getRepetitions()
+                + " | " + status);
+    }
+
+    System.out.print("Marquer exercice terminé (index ou -1): ");
+    int index = Integer.parseInt(scanner.nextLine());
+
+    if (index != -1) {
+        boolean ok = gestionnaireProgramme.terminerExercice(adherent.getId(), index);
+
+        if (ok) {
+            System.out.println("Exercice terminé !");
+        } else {
+            System.out.println("Erreur.");
+        }
+    }
+}
 
 }

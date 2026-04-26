@@ -1,34 +1,40 @@
 import java.util.ArrayList;
+
 public class Programme {
     private String objectif;
-    private Adherent adherent;
+    private int idAdherent;
     private ArrayList<Exercice> exercices;
 
-    public Programme(String objectif, Adherent adherent) {
+    public Programme(String objectif, int idAdherent) {
         this.objectif = objectif;
-        this.adherent = adherent;
+        this.idAdherent = idAdherent;
         this.exercices = new ArrayList<>();
-    }
-
-    public void ajouterExercice(Exercice exercice) {
-        System.out.println("[Programme] Nouvel exercice ajouté au plan : " + objectif);
     }
 
     public String getObjectif() {
         return objectif;
     }
+
     public void setObjectif(String objectif) {
         this.objectif = objectif;
     }
-    public Adherent getAdherent() {
-        return adherent;
+
+    public int getIdAdherent() {
+        return idAdherent;
     }
-    public void setAdherent(Adherent adherent) {
-        this.adherent = adherent;
-    }
+
     public ArrayList<Exercice> getExercices() {
         return exercices;
     }
+
+    // ✅ ajouter exercice
+    public void ajouterExercice(Exercice e) {
+        exercices.add(e);
+    }
+
+
+
+
 
 
     
