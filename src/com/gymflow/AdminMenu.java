@@ -1,4 +1,6 @@
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,6 +14,7 @@ public class AdminMenu {
     private List<Adherent> adherents = new ArrayList<>();
     private List<Coach> coaches = new ArrayList<>();
     private List<Reservation> reservations = new ArrayList<>();
+    public static GestionnaireReservation gestionnaire = new GestionnaireReservation();
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 
@@ -73,11 +76,40 @@ public class AdminMenu {
                 rechercherParRole();
                 break;
             case "4":
+                ajouterSeanceInteractif(gestionnaire, scanner);
                 break;
         }
     }
 
-    
+    // ================= RESERVATION =================
+
+    private static void ajouterSeanceInteractif(GestionnaireReservation gestionnaire, Scanner scanner) {
+        System.out.println("\n--- Ajout d'une nouvelle séance ---");
+
+        System.out.print("ID de la séance : ");
+        int id = Integer.parseInt(scanner.nextLine().trim());
+
+        System.out.print("Type (Yoga/Cardio/Musculation) : ");
+        String type = scanner.nextLine().trim();
+
+        System.out.print("Date et heure (dd/MM/yyyy HH:mm) : ");
+        String dateHeureTexte = scanner.nextLine().trim();
+        LocalDateTime dateHeure;
+        try {
+            dateHeure = LocalDateTime.parse(dateHeureTexte, DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            System.out.println("Erreur : format de date invalide. Utilisez dd/MM/yyyy HH:mm.");
+            return;
+        }
+
+        System.out.print("Capacité : ");
+        int capacite = Integer.parseInt(scanner.nextLine().trim());
+
+        System.out.print("Prix en DT : ");
+        double prixDT = Double.parseDouble(scanner.nextLine().trim());
+
+        gestionnaire.ajouterSeance(id, type, dateHeure, capacite, prixDT);
+    }
 
     // ---------- ADHERENTS ----------
     private void gererAdherents() {
@@ -257,11 +289,4 @@ public class AdminMenu {
         }
     }
 
-    // 👉 Dummy data (same style as CoachMenu)
-    public void addDummyData() {
-        adherents.add(new Adherent(1, "Alice", "alice@mail.com", 12345678, "123", null, null));
-        adherents.add(new Adherent(2, "Bob", "bob@mail.com", 87654321, "123", null, null));
-
-        coaches.add(new Coach(1, "Coach A", "sdffsd@vbncv", 12345678, "123"));
-    }
 }

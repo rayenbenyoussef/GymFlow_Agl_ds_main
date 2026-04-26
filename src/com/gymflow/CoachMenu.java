@@ -31,13 +31,11 @@ public class CoachMenu {
 
             switch (choice) {
                 case "1":
-                    creerProgramme();
                     break;
                 case "2":
                     voirAdherents();
                     break;
                 case "3":
-                    ajouterExercice();
                     break;
                 case "4":
                     running = false;
@@ -49,32 +47,7 @@ public class CoachMenu {
     }
 
     // ✅ 1. Create program
-    private void creerProgramme() {
-        if (adherents.isEmpty()) {
-            System.out.println("Aucun adhérent disponible.");
-            return;
-        }
-
-        voirAdherents();
-        System.out.print("Choisir l'index de l'adhérent: ");
-        int index = Integer.parseInt(scanner.nextLine());
-
-        if (index < 0 || index >= adherents.size()) {
-            System.out.println("Index invalide.");
-            return;
-        }
-
-        Adherent adherent = adherents.get(index);
-
-        System.out.print("Objectif (ex: Prise de masse): ");
-        String objectif = scanner.nextLine();
-
-        Programme programme = new Programme(objectif, adherent);
-        programmes.add(programme);
-
-        System.out.println("Programme créé avec succès !");
-    }
-
+    
     // ✅ 2. Show adherents
     private void voirAdherents() {
         if (adherents.isEmpty()) {
@@ -88,41 +61,6 @@ public class CoachMenu {
     }
 
     // ✅ 3. Add exercise
-    private void ajouterExercice() {
-        if (programmes.isEmpty()) {
-            System.out.println("Aucun programme disponible.");
-            return;
-        }
-
-        // Show programs
-        for (int i = 0; i < programmes.size(); i++) {
-            System.out.println(i + " - " + programmes.get(i).getObjectif());
-        }
-
-        System.out.print("Choisir un programme: ");
-        int index = Integer.parseInt(scanner.nextLine());
-
-        if (index < 0 || index >= programmes.size()) {
-            System.out.println("Index invalide.");
-            return;
-        }
-
-        Programme programme = programmes.get(index);
-
-        System.out.print("Nom de l'exercice: ");
-        String nom = scanner.nextLine();
-
-        System.out.print("Nombre de séries: ");
-        int series = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Nombre de répétitions: ");
-        int repetitions = Integer.parseInt(scanner.nextLine());
-
-        Exercice exercice = new Exercice(nom, series, repetitions);
-
-        programme.ajouterExercice(exercice);
-
-        System.out.println("Exercice ajouté !");
-    }
+    
 
 }

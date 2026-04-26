@@ -1,6 +1,4 @@
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,6 +9,7 @@ public class AdherentMenu {
     private Adherent adherent;
 
     private List<Reservation> reservations = new ArrayList<>();
+    public static GestionnaireReservation gestionnaire = new GestionnaireReservation();
     public AdherentMenu(Adherent adherent) {
         this.adherent = adherent;
     }
@@ -33,13 +32,18 @@ public class AdherentMenu {
 
             switch (choice) {
                 case "1":
+
+                    gestionnaire.afficherToutesSeances();
                     break;
                 case "2":
+                    gestionnaire.reserverSeance(adherent.getId(), 0);
                     break;
                 case "3":
                     
+                    annulerReservation();
                     break;
                 case "4":
+               
                     
                     break;
                 case "5":
@@ -58,6 +62,45 @@ public class AdherentMenu {
         }
     }
 
+
+    
+
+    // ================= CANCEL =================
+
+    public Seance findSeanceById(int idSeance) {
+        for (Seance s : gestionnaire.getSeances()) {
+            if (s.getId() == idSeance) {
+                return s;
+            }
+        }
+        return null;
+    }
+    private void annulerReservation() {
+        if (reservations.isEmpty()) {
+            System.out.println("Aucune réservation.");
+            return;
+        }
+
+        for (int i = 0; i < reservations.size(); i++) {
+            Reservation r = reservations.get(i);
+            System.out.println(i + " - " + findSeanceById(r.getIdSeance()).getNom() + " | " + findSeanceById(r.getIdSeance()).getType());
+        }
+
+        System.out.print("Choisir réservation: ");
+        int index = Integer.parseInt(scanner.nextLine());
+
+        Reservation r = reservations.get(index);
+
+        if (findSeanceById(r.getIdSeance()).getHeure().minusHours(1).isBefore(LocalDateTime.now())) {
+            System.out.println("Impossible d'annuler (moins de 1h).");
+            return;
+        }
+
+        findSeanceById(r.getIdSeance()).annulerPlace();
+        reservations.remove(index);
+
+        System.out.println("Réservation annulée !");
+    }
 
 
 
