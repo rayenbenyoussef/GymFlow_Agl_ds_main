@@ -1,6 +1,4 @@
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,7 +12,6 @@ public class AdminMenu {
     private List<Adherent> adherents = new ArrayList<>();
     private List<Coach> coaches = new ArrayList<>();
     private List<Reservation> reservations = new ArrayList<>();
-    public static GestionnaireReservation gestionnaire = new GestionnaireReservation();
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 
@@ -67,159 +64,17 @@ public class AdminMenu {
 
         switch (choice) {
             case "1":
-                gererAdherents();
                 break;
             case "2":
-                gererCoachs();
                 break;
             case "3":
-                rechercherParRole();
                 break;
             case "4":
-                ajouterSeanceInteractif(gestionnaire, scanner);
                 break;
         }
     }
 
-    // ================= RESERVATION =================
-
-    private static void ajouterSeanceInteractif(GestionnaireReservation gestionnaire, Scanner scanner) {
-        System.out.println("\n--- Ajout d'une nouvelle séance ---");
-
-        System.out.print("ID de la séance : ");
-        int id = Integer.parseInt(scanner.nextLine().trim());
-
-        System.out.print("Type (Yoga/Cardio/Musculation) : ");
-        String type = scanner.nextLine().trim();
-
-        System.out.print("Date et heure (dd/MM/yyyy HH:mm) : ");
-        String dateHeureTexte = scanner.nextLine().trim();
-        LocalDateTime dateHeure;
-        try {
-            dateHeure = LocalDateTime.parse(dateHeureTexte, DATE_TIME_FORMATTER);
-        } catch (DateTimeParseException e) {
-            System.out.println("Erreur : format de date invalide. Utilisez dd/MM/yyyy HH:mm.");
-            return;
-        }
-
-        System.out.print("Capacité : ");
-        int capacite = Integer.parseInt(scanner.nextLine().trim());
-
-        System.out.print("Prix en DT : ");
-        double prixDT = Double.parseDouble(scanner.nextLine().trim());
-
-        gestionnaire.ajouterSeance(id, type, dateHeure, capacite, prixDT);
-    }
-
-    // ---------- ADHERENTS ----------
-    private void gererAdherents() {
-        System.out.println("\n1. Ajouter");
-        System.out.println("2. Supprimer");
-        System.out.println("3. Afficher");
-
-        String choice = scanner.nextLine();
-
-        switch (choice) {
-            case "1":
-                ajouterAdherent();
-                break;
-
-            case "2":
-                supprimerAdherent();
-                break;
-
-            case "3":
-                afficherAdherents();
-                break;
-        }
-    }
-
-    private void ajouterAdherent() {
-        System.out.print("ID: ");
-        int id = Integer.parseInt(scanner.nextLine());
-
-        System.out.print("Nom: ");
-        String nom = scanner.nextLine();
-
-        System.out.print("Email: ");
-        String email = scanner.nextLine();
-
-        System.out.print("Téléphone: ");
-        int tel = Integer.parseInt(scanner.nextLine());
-
-        adherents.add(new Adherent(id, nom, email, tel,"" ,null, null));
-        System.out.println("Adhérent ajouté !");
-    }
-
-    private void supprimerAdherent() {
-        afficherAdherents();
-        System.out.print("Index à supprimer: ");
-
-        int index = Integer.parseInt(scanner.nextLine());
-
-        if (index >= 0 && index < adherents.size()) {
-            adherents.remove(index);
-            System.out.println("Supprimé !");
-        } else {
-            System.out.println("Index invalide.");
-        }
-    }
-
-    private void afficherAdherents() {
-        if (adherents.isEmpty()) {
-            System.out.println("Aucun adhérent.");
-            return;
-        }
-
-        for (int i = 0; i < adherents.size(); i++) {
-            Adherent a = adherents.get(i);
-            System.out.println(i + " - " + a.getNom());
-        }
-    }
-
-    // ---------- COACHS ----------
-    private void gererCoachs() {
-        System.out.println("\n1. Ajouter");
-        System.out.println("2. Supprimer");
-        System.out.println("3. Afficher");
-
-        String choice = scanner.nextLine();
-
-        switch (choice) {
-            case "1":
-                System.out.print("id: ");
-                int id = scanner.nextInt();
-                System.out.print("Nom: ");
-                String nom = scanner.nextLine();
-                System.out.print("Num telephone: ");
-                int numTelephone = scanner.nextInt();
-                System.out.print("email: ");
-                String email = scanner.nextLine();
-
-
-                coaches.add(new Coach(id, nom, email, numTelephone,"123"));
-                System.out.println("Coach ajouté !");
-                break;
-
-            case "2":
-                afficherCoachs();
-                System.out.print("Index à supprimer: ");
-                int index = Integer.parseInt(scanner.nextLine());
-
-                if (index >= 0 && index < coaches.size()) {
-                    coaches.remove(index);
-                    System.out.println("Supprimé !");
-                } else {
-                    System.out.println("Index invalide.");
-                }
-                break;
-
-            case "3":
-                afficherCoachs();
-                break;
-        }
-    }
-
+    
     private void afficherCoachs() {
         if (coaches.isEmpty()) {
             System.out.println("Aucun coach.");
@@ -228,22 +83,6 @@ public class AdminMenu {
 
         for (int i = 0; i < coaches.size(); i++) {
             System.out.println(i + " - " + coaches.get(i).getNom());
-        }
-    }
-
-    // ---------- SEARCH ----------
-    private void rechercherParRole() {
-        System.out.println("\n1. Adhérents");
-        System.out.println("2. Coachs");
-
-        String choice = scanner.nextLine();
-
-        if (choice.equals("1")) {
-            afficherAdherents();
-        } else if (choice.equals("2")) {
-            afficherCoachs();
-        } else {
-            System.out.println("Choix invalide.");
         }
     }
 
