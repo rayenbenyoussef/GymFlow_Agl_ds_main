@@ -1,28 +1,38 @@
-public class Exercice {
+class Exercice {
     private String nom;
-    private int series;
+    private int duree; // en secondes ou minutes
     private int repetitions;
-    private int repos; // en secondes
-    private boolean estTermine;
+    private int series;
 
-    public Exercice(String nom, int series, int repetitions, int repos) {
+    private boolean istermine;
+
+    public Exercice(String nom,int series,int repetitions) {
         this.nom = nom;
-        this.series = series;
         this.repetitions = repetitions;
-        this.repos = repos;
-        this.estTermine = false;
+        this.istermine = false;
+        this.series = series;
     }
 
-    public void marquerCommeTermine() {
-        this.estTermine = true;
+    public void afficherExercice() {
+        System.out.println("   - Exercice: " + nom + " | " + repetitions + " reps | Durée: " + duree + "s");
+    }
+    public String getNom() {
+        return nom;
+    }
+    public int getDuree() {
+        return duree;
+    }
+    public int getRepetitions() {
+        return repetitions;
+    }
+    public boolean isTermines() {
+        return this.istermine;
+    }
+    public void setTermine(boolean termines) {
+        this.istermine = termines;
+    }
+    public int getSeries() {
+        return series;
     }
 
-    public boolean isEstTermine() { return estTermine; }
-    public String getNom() { return nom; }
-
-    @Override
-    public String toString() {
-        String statut = estTermine ? "[✅ Terminé]" : "[⏳ En cours]";
-        return statut + " " + nom + " : " + series + "x" + repetitions + " (Repos: " + repos + "s)";
-    }
 }

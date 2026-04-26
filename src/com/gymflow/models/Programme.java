@@ -1,35 +1,35 @@
 import java.util.ArrayList;
-import java.util.List;
-
 public class Programme {
-    private String nom;
     private String objectif;
-    private List<Exercice> exercices;
-    private String nomAdherentAssigne;
+    private Adherent adherent;
+    private ArrayList<Exercice> exercices;
 
-    public Programme(String nom, String objectif) {
-        this.nom = nom;
+    public Programme(String objectif, Adherent adherent) {
         this.objectif = objectif;
+        this.adherent = adherent;
         this.exercices = new ArrayList<>();
     }
 
-    public void ajouterExercice(Exercice e) {
-        if (e != null) {
-            exercices.add(e);
-        }
+    public void ajouterExercice(Exercice exercice) {
+        System.out.println("[Programme] Nouvel exercice ajouté au plan : " + objectif);
     }
 
-    public void assignerA(String nomAdherent) {
-        this.nomAdherentAssigne = nomAdherent;
+    public String getObjectif() {
+        return objectif;
+    }
+    public void setObjectif(String objectif) {
+        this.objectif = objectif;
+    }
+    public Adherent getAdherent() {
+        return adherent;
+    }
+    public void setAdherent(Adherent adherent) {
+        this.adherent = adherent;
+    }
+    public ArrayList<Exercice> getExercices() {
+        return exercices;
     }
 
-    public double calculerProgression() {
-        if (exercices.isEmpty()) return 0;
-        long nbTermines = exercices.stream().filter(Exercice::isEstTermine).count();
-        return (double) nbTermines / exercices.size() * 100;
-    }
 
-    public List<Exercice> getExercices() { return exercices; }
-    public String getNom() { return nom; }
-    public String getObjectif() { return objectif; }
+    
 }
