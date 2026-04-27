@@ -13,4 +13,16 @@ abstract class Utilisateur {
     public void seConnecter() {
         System.out.println("[Auth] " + nom + " est connecté avec succès.");
     }
+    public String getNom() {
+        return nom;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
 }

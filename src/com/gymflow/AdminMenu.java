@@ -16,7 +16,6 @@ public class AdminMenu {
     private List<Adherent> adherents = new ArrayList<>();
     private List<Coach> coaches = new ArrayList<>();
     private List<Reservation> reservations = new ArrayList<>();
-    public static GestionnaireReservation gestionnaire = new GestionnaireReservation();
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public AdminMenu(Admin admin) {
@@ -159,11 +158,7 @@ public class AdminMenu {
             return;
         }
 
-        Adherent adherent = Inscription.inscrireAdherentInteractif(scanner);
-        if (adherent != null) {
-            adherents.add(adherent);
-            System.out.println("✅ Adhérent ajouté avec succès !");
-        }
+        
     }
 
     /**
@@ -268,11 +263,7 @@ public class AdminMenu {
      * Ajouter un coach
      */
     private void ajouterCoach() {
-        Coach coach = Inscription.inscrireCoachInteractif(scanner);
-        if (coach != null) {
-            coaches.add(coach);
-            System.out.println("✅ Coach ajouté avec succès !");
-        }
+        
     }
 
     /**
@@ -357,10 +348,8 @@ public class AdminMenu {
 
         switch (choice) {
             case "1":
-                ajouterSeanceInteractif(gestionnaire, scanner);
                 break;
             case "2":
-                gestionnaire.afficherToutesSeances();
                 break;
             case "3":
                 modifierSeance();
