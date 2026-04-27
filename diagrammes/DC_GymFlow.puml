@@ -1,0 +1,120 @@
+@startuml
+title Diagramme de classes - GymFlow
+
+' ========================
+' Classe abstraite
+' ========================
+abstract class Utilisateur {
+  - id : int
+  - nom : String
+  - email : String
+  - numTelephone : int
+  - dateDeNaissance : Date
+  - mdpSha256 : String
+  + seConnecter()
+  + seDeconnecter()
+}
+
+' ========================
+' Héritage
+' ========================
+class Admin {
+  + gererUtilisateurs()
+  + voirStatistiques()
+}
+
+class Adherent {
+  + reserverSeance()
+  + gererAbonnement()
+}
+
+class Coach {
+  + creerProgramme()
+  + gererSeances()
+}
+
+Utilisateur <|-- Admin
+Utilisateur <|-- Adherent
+Utilisateur <|-- Coach
+
+' ========================
+' Abonnement
+' ========================
+class Abonnement {
+  - id : int
+  - idAdherent : int
+  - type : String
+  - dateDebut : Date
+  - dateFin : Date
+  - statut : String
+  + estValide()
+  + renouveler()
+}
+
+Adherent "0" -- "*" Abonnement
+
+' ========================
+' Seance & Reservation
+' ========================
+class Seance {
+  - id : int
+  - idCoach : int
+  - type : String
+  - date : Date
+  - heure : String
+  - capacite : int
+  + ajouterParticipant()
+  + supprimerParticipant()
+}
+
+class Reservation {
+  - id : int
+  - idAdherent : int
+  - idSeance : int
+  - dateReservation : Date
+  - statut : String
+  + confirmer()
+  + annuler()
+}
+
+Adherent "1" -- "*" Reservation
+Seance "1" -- "*" Reservation
+Coach "1" -- "*" Seance
+
+' ========================
+' Programme & Exercice
+' ========================
+class Programme {
+  - id : int
+  - idCoach : int
+  - idAdherent : int
+  - nom : String
+  - description : String
+  + ajouterExercice()
+}
+
+class Exercice {
+  - id : int
+  - idProgramme : id
+  - nom : String
+  - duree : int
+  - repetitions : int
+}
+
+Coach "1" -- "*" Programme
+Programme "1" -- "*" Exercice
+Adherent "*" -- "*" Programme
+
+' ========================
+' Statistiques
+' ========================
+class Statistique {
+  - totalRevenus : double
+  - nombreAdherents : int
+  - tauxFrequentation : float
+  + calculerStats()
+}
+
+Admin "1" -- "1" Statistique
+
+@enduml

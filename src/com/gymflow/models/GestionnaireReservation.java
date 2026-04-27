@@ -51,7 +51,7 @@ class GestionnaireReservation {
         ArrayList<Seance> seancesDisponibles = new ArrayList<>();
 
         for (Seance seance : seances) {
-            if (seance.getType().equals(type) ) {
+            if (seance.getType().equals(type)) {
                 seancesDisponibles.add(seance);
             }
         }
@@ -164,7 +164,7 @@ class GestionnaireReservation {
     // Créer un abonnement pour un adhérent
     public Abonnement creerAbonnement(int idAdherent, String type, Facture facture) {
         // Vérifier que le type est valide
-        Abonnement abonnement = new Abonnement(abonnements.size() + 1,idAdherent, type, "Actif");
+        Abonnement abonnement = new Abonnement(abonnements.size() + 1, idAdherent, type, "Actif");
 
         // Ajouter à la facture
         facture.ajouterDetail("Abonnement " + type, abonnement.getPrixDT());
@@ -211,6 +211,10 @@ class GestionnaireReservation {
             }
         }
         return null;
+    }
+
+    public int getNombreSeances() {
+        return seances.size();
     }
 
     // Trouver l'abonnement d'un adhérent
