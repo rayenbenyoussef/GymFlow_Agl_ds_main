@@ -82,11 +82,18 @@ class GestionnaireReservation {
     // ===== GESTION DES RÉSERVATIONS =====
 
     // Réserver une séance pour un adhérent
-    public boolean reserverSeance(int idAdherent, int idSeance) {
+    public boolean reserverSeance(int idAdherent, int idSeance, Facture facture) {
         // Trouver la séance
         Seance seance = trouverSeance(idSeance);
         if (seance == null) {
             System.out.println("Erreur : Séance non trouvée.");
+            return false;
+        }
+
+        // Vérifier que l'adhérent a un abonnement valide
+        Abonnement abonnement = trouverAbonnementAdherent(idAdherent);
+        if (abonnement == null || !abonnement.estValide()) {
+            System.out.println("Erreur : L'adhérent n'a pas d'abonnement valide.");
             return false;
         }
 
@@ -102,12 +109,13 @@ class GestionnaireReservation {
         reservations.add(reservation);
 
         // Ajouter le détail à la facture
+        facture.ajouterDetail("Réservation " + seance.getType(), seance.getPrixDT());
 
         return true;
     }
 
     // Annuler une réservation
-    public boolean annulerReservation(int idReservation) {
+    public boolean annulerReservation(int idReservation, Facture facture) {
         Reservation reservation = trouverReservation(idReservation);
         if (reservation == null) {
             System.out.println("Erreur : Réservation non trouvée.");
@@ -121,6 +129,7 @@ class GestionnaireReservation {
 
         if (reservation.annuler()) {
             // Ajouter un crédit à la facture
+            facture.ajouterDetail("Remboursement réservation", -reservation.getMontantPayeDT());
             return true;
         }
 
@@ -150,7 +159,37 @@ class GestionnaireReservation {
         System.out.println("==========================================\n");
     }
 
-    
+    // ===== GESTION DES ABONNEMENTS =====
+
+    // Créer un abonnement pour un adhérent
+    public Abonnement creerAbonnement(int idAdherent, String type, Facture facture) {
+        // Vérifier que le type est valide
+        Abonnement abonnement = new Abonnement(abonnements.size() + 1,idAdherent, type, "Actif");
+
+        // Ajouter à la facture
+        facture.ajouterDetail("Abonnement " + type, abonnement.getPrixDT());
+
+        abonnements.add(abonnement);
+        System.out.println("✓ Abonnement " + type + " créé pour l'adhérent " + idAdherent);
+
+        return abonnement;
+    }
+
+    // Renouveler un abonnement
+    public boolean renouvellerAbonnement(int idAdherent, Facture facture) {
+        Abonnement abonnement = trouverAbonnementAdherent(idAdherent);
+        if (abonnement == null) {
+            System.out.println("Erreur : Aucun abonnement pour cet adhérent.");
+            return false;
+        }
+
+        if (abonnement.renouveler()) {
+            facture.ajouterDetail("Renouvellement " + abonnement.getType(), abonnement.getPrixDT());
+            return true;
+        }
+
+        return false;
+    }
 
     // ===== MÉTHODES UTILITAIRES =====
 
@@ -174,6 +213,15 @@ class GestionnaireReservation {
         return null;
     }
 
+    // Trouver l'abonnement d'un adhérent
+    private Abonnement trouverAbonnementAdherent(int idAdherent) {
+        for (Abonnement abonnement : abonnements) {
+            if (abonnement.getIdAdherent() == idAdherent) {
+                return abonnement;
+            }
+        }
+        return null;
+    }
 
     // Getters
     public ArrayList<Seance> getSeances() {
@@ -186,5 +234,10 @@ class GestionnaireReservation {
 
     public ArrayList<Abonnement> getAbonnements() {
         return abonnements;
+    }
+
+    public void reserverSeance(int id, int i) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'reserverSeance'");
     }
 }

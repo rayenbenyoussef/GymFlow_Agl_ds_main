@@ -1,4 +1,6 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -43,11 +45,14 @@ public class AdherentMenu {
                     
                     annulerReservation();
                     break;
+                
+
                 case "4":
-               
+                    voirAbonnement();
                     
                     break;
                 case "5":
+                    choisirAbonnement();
                     
                     break;
                     
@@ -63,7 +68,6 @@ public class AdherentMenu {
             }
         }
     }
-
 
     
 
@@ -152,5 +156,64 @@ public class AdherentMenu {
         }
     }
 }
+
+    
+
+
+    // ================= ABONNEMENT =================
+
+    private void voirAbonnement() {
+        Abonnement a = adherent.getAbonnement();
+
+        if (a == null) {
+            System.out.println("Aucun abonnement.");
+            return;
+        }
+
+        a.afficherDetails(); // ✅ much better
+    }
+
+    private void choisirAbonnement() {
+    if (adherent == null) {
+        System.out.println("Erreur: aucun adherent connecté.");
+        return;
+    }
+
+    Abonnement current = adherent.getAbonnement();
+
+    // 🚫 Prevent override if active
+    if (current != null && current.estValide()) {
+        System.out.println("Vous avez déjà un abonnement actif !");
+        current.afficherDetails();
+        return;
+    }
+
+    System.out.println("\n1. Mensuel - 50 DT");
+    System.out.println("2. Trimestriel - 130 DT");
+    System.out.println("3. Annuel - 450 DT");
+
+    String choice = scanner.nextLine();
+
+    Abonnement a = null;
+
+    switch (choice) {
+        case "1":
+            a = new Abonnement(1, adherent.getId(), "Mensuel", "Actif");
+            break;
+        case "2":
+            a = new Abonnement(2, adherent.getId(), "Trimestriel", "Actif");
+            break;
+        case "3":
+            a = new Abonnement(3, adherent.getId(), "Annuel", "Actif");
+            break;
+        default:
+            System.out.println("Choix invalide.");
+            return;
+    }
+
+    adherent.setAbonnement(a);
+    System.out.println("✓ Nouvel abonnement activé !");
+}
+
 
 }

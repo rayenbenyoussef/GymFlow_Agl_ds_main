@@ -66,8 +66,6 @@ public class CoachMenu {
         }
     }
 
-    // ✅ 1. Create program
-    
     // ✅ 2. Show adherents
     private void voirAdherents() {
         if (adherents.isEmpty()) {
@@ -79,8 +77,5 @@ public class CoachMenu {
             System.out.println(i + " - " + adherents.get(i).getNom());
         }
     }
-
-    // ✅ 3. Add exercise
-    
-
+   
 }
