@@ -26,8 +26,43 @@ class Reservation {
         this.montantPayeDT = 0;
     }
 
-  
-  
+    // Confirmer la réservation et débiter le prix
+    public boolean confirmer() {
+        // Vérifier que la séance a des places disponibles
+        if (!seanceAssociee.aDesPlacesDisponibles()) {
+            System.out.println("Erreur : La séance est complète.");
+            return false;
+        }
+
+        // Réserver une place dans la séance
+        if (!seanceAssociee.reserverPlace()) {
+            return false;
+        }
+
+        // Débiter le montant
+        this.montantPayeDT = seanceAssociee.getPrixDT();
+        this.statut = "Confirmée";
+        System.out.println("✓ Réservation confirmée. Montant débité : " + montantPayeDT + " DT");
+        return true;
+    }
+
+    // Annuler la réservation si délai respecté
+    public boolean annuler() {
+        // Vérifier que la réservation est confirmée
+        if (!statut.equals("Confirmée")) {
+            System.out.println("Erreur : Seule une réservation confirmée peut être annulée.");
+            return false;
+        }
+
+        // Libérer la place dans la séance
+        seanceAssociee.annulerPlace();
+
+        // Rembourser la totalité
+        System.out.println("✓ Réservation annulée. Remboursement : " + montantPayeDT + " DT");
+        this.montantPayeDT = 0;
+        this.statut = "Annulée";
+        return true;
+    }
 
     // Vérifier si l'annulation est possible
     public boolean annulationPossible() {
@@ -38,6 +73,18 @@ class Reservation {
         return heuresAvant >= DELAI_ANNULATION_HEURES;
     }
 
+    // Afficher les détails de la réservation
+    public void afficherDetails() {
+        System.out.println("\n--- Détails de la réservation ---");
+        System.out.println("ID Réservation: " + id);
+        System.out.println("ID Adhérent: " + idAdherent);
+        System.out.println("Type de séance: " + seanceAssociee.getType());
+        System.out.println("Date de la séance: " + seanceAssociee.getHeure().format(formatter));
+        System.out.println("Date de réservation: " + dateReservation.format(formatter));
+        System.out.println("Statut: " + statut);
+        System.out.println("Montant payé: " + montantPayeDT + " DT");
+        System.out.println("---------------------------------");
+    }
 
     // Getters
     public int getId() {
