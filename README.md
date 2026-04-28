@@ -1,6 +1,3 @@
-Il ne vous reste plus qu'à copier le bloc de code ci-dessous et à le coller dans un fichier nommé README.md à la racine de votre projet GitHub.
-Markdown
-
 # 🏋️‍♂️ GymFlow — Application intelligente de gestion de salle de sport
 
 [![Figma Design](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/files/team/1610878409329776945/project/589860077?fuid=1610878407351164491)
