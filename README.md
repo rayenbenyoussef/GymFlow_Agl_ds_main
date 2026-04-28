@@ -1,58 +1,47 @@
+Il ne vous reste plus qu'à copier le bloc de code ci-dessous et à le coller dans un fichier nommé README.md à la racine de votre projet GitHub.
+Markdown
+
 # 🏋️‍♂️ GymFlow — Application intelligente de gestion de salle de sport
 
+[![Figma Design](https://img.shields.io/badge/Figma-Design-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/files/team/1610878409329776945/project/589860077?fuid=1610878407351164491)
+[![Java](https://img.shields.io/badge/Language-Java-007396?style=for-the-badge&logo=java&logoColor=white)](#)
+[![Methodology](https://img.shields.io/badge/Methodology-Agile%20Scrum-blue?style=for-the-badge)](#)
+
 ## 🎯 Pitch
-GymFlow est une solution intelligente de gestion de salles de sport qui automatise le suivi des abonnements et la réservation des équipements. Elle offre aux adhérents un accompagnement personnalisé et aux coachs un outil de suivi de performance pour maximiser la motivation et l'organisation de la salle.
+**GymFlow** est une solution intelligente de gestion qui transforme l'expérience en salle de sport. En automatisant les processus critiques (abonnements, réservations, programmes), elle permet aux coachs de se concentrer sur l'humain et aux adhérents de maximiser leur motivation.
 
 ---
 
-## ❗ Problème
-Les salles de sport rencontrent plusieurs difficultés :
-- gestion manuelle des abonnements  
-- absence de suivi personnalisé  
-- surcharge des machines  
-- manque d’outils de motivation  
+## ❗ Le challenge
+Les salles de sport modernes souffrent souvent de :
+* **Lourdeur administrative :** Gestion manuelle complexe des abonnements.
+* **Saturation :** Manque de visibilité sur l'occupation des équipements.
+* **Abandon :** Absence de suivi personnalisé pour les adhérents.
 
 ---
 
-## 👥 Acteurs
-- **Visiteur** : consulter les informations  
-- **Client (Adhérent)** : gérer abonnement et réservations  
-- **Coach** : créer programmes d’entraînement  
-- **Administrateur** : gérer la plateforme  
+## 👥 Acteurs du système
+* **Visiteur :** Accès aux informations et offres de la salle.
+* **Adhérent :** Gestion autonome du profil, des réservations et suivi de progression.
+* **Coach :** Création de programmes d'entraînement sur-mesure.
+* **Administrateur :** Pilotage global, gestion des utilisateurs et statistiques financières.
 
 ---
 
-## ⚙️ Fonctionnalités principales
+## ⚙️ Fonctionnalités clés par module
 
-### 🔐 Authentification & Profil
-- Inscription / Connexion  
-- Gestion des informations personnelles  
-
-### 💳 Gestion des abonnements
-- Souscription à un abonnement  
-- Vérification de validité  
-- Notification d’expiration  
-
-### 📅 Réservation des séances
-- Réservation de créneaux  
-- Consultation du planning  
-- Annulation  
-
-### 📊 Programme d’entraînement
-- Création par le coach  
-- Suivi des exercices  
-- Historique des performances  
-
-### 🛠️ Dashboard Admin
-- Gestion des utilisateurs  
-- Statistiques (revenus, fréquentation)  
+* **🔐 Auth & Security (Fakhri) :** Système d'accès hiérarchisé (Admin/Adhérent/Coach) avec gestion sécurisée des profils.
+* **🛠️ Admin Dashboard (Rayen) :** Statistiques de revenus en temps réel et gestion centralisée des membres.
+* **💳 Smart Billing (Naceur) :** Souscription aux packs avec calcul automatique de la TVA (7%) et formatage monétaire en **Dinars Tunisiens (DT)**.
+* **📅 Booking Engine (Yassine) :** Gestion intelligente des créneaux horaires avec contrôle strict des capacités de salle.
+* **📊 Training Suite (Hamza) :** Suivi interactif des exercices avec indicateurs visuels de complétion (✔/❌).
 
 ---
 
-## 🤖 Bonus (Innovation)
-- Recommandation automatique de programmes  
-- Notifications (séances, abonnements)  
-- Système de motivation (badges)  
+## 🤖 L'Approche Hybride (IA + Humain)
+Ce projet intègre une méthodologie de développement moderne :
+1. **Génération IA :** Utilisation de prompts structurés pour le boilerplate et la logique algorithmique.
+2. **Expertise Humaine :** Correction rigoureuse des règles métier, intégration des spécificités locales (DT/TVA) et optimisation de l'architecture POO.
 
 ---
 
